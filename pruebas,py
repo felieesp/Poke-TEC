@@ -1,0 +1,91 @@
+from tkinter import *
+from os import path
+import random
+
+ventana = Tk()
+ventana.title("Pokémon Azul")
+ventana.minsize(1200, 800)
+ventana.resizable(width=NO, height=NO)
+
+fuentegeneral = ('Noto Sans', 15)
+
+# ================= FUNCIONES =================
+
+def cargar_img(nombre):
+    ruta = path.join('images', nombre)
+    img = PhotoImage(file=ruta)
+    return img
+
+def mostrar_nombre():
+    nombre = E_nombre.get()
+    if nombre != '':
+        seleccionar_pokemon(nombre)
+
+def seleccionar_pokemon(nombre):
+    ventana_sel = Toplevel()
+    ventana_sel.title("Elige tu Pokémon")
+
+    Label(ventana_sel, text=f"{nombre}, elige tu Pokémon:", font=fuentegeneral).pack()
+
+    Button(ventana_sel, text="Charmander", command=lambda: iniciar_combate(nombre, "Charmander")).pack(pady=10)
+    Button(ventana_sel, text="Squirtle", command=lambda: iniciar_combate(nombre, "Squirtle")).pack(pady=10)
+    Button(ventana_sel, text="Bulbasaur", command=lambda: iniciar_combate(nombre, "Bulbasaur")).pack(pady=10)
+
+def iniciar_combate(nombre, pokemon):
+    combate = Toplevel()
+    combate.title("Combate Pokémon")
+
+    vida_jugador = 100
+    vida_enemigo = 100
+
+    lbl_info = Label(combate, text=f"{nombre} usa {pokemon}", font=fuentegeneral)
+    lbl_info.pack()
+
+    lbl_vida_jugador = Label(combate, text=f"Tu vida: {vida_jugador}", font=fuentegeneral)
+    lbl_vida_jugador.pack()
+
+    lbl_vida_enemigo = Label(combate, text=f"Enemigo vida: {vida_enemigo}", font=fuentegeneral)
+    lbl_vida_enemigo.pack()
+
+    def atacar():
+        nonlocal vida_jugador, vida_enemigo
+
+        daño_jugador = random.randint(10, 25)
+        daño_enemigo = random.randint(5, 20)
+
+        vida_enemigo -= daño_jugador
+        vida_jugador -= daño_enemigo
+
+        lbl_vida_jugador.config(text=f"Tu vida: {vida_jugador}")
+        lbl_vida_enemigo.config(text=f"Enemigo vida: {vida_enemigo}")
+
+        if vida_enemigo <= 0:
+            lbl_info.config(text="¡Ganaste!")
+        elif vida_jugador <= 0:
+            lbl_info.config(text="Perdiste...")
+
+    Button(combate, text="Atacar", command=atacar, width=20).pack(pady=20)
+
+# ================= INTERFAZ =================
+
+C_principal = Canvas(ventana, width=1200, height=800)
+C_principal.place(x=0, y=0)
+
+# Fondo (asegúrate que la imagen exista)
+try:
+    C_principal.fondo = cargar_img('PantallaDeCarga.png')
+    C_principal.create_image(0, 0, anchor=NW, image=C_principal.fondo)
+except:
+    pass
+
+about = "Pokémon Azul"
+L_about = Label(C_principal, text=about, font=fuentegeneral, bg='#ffffff')
+L_about.place(x=280, y=360)
+
+E_nombre = Entry(ventana, width=15, font=fuentegeneral)
+E_nombre.place(x=20, y=200)
+
+Btn_empezar = Button(ventana, text='Iniciar', command=mostrar_nombre, width=20, height=2)
+Btn_empezar.place(x=20, y=300)
+
+ventana.mainloop()
