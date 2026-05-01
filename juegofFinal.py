@@ -5,9 +5,8 @@ import json  # Para guardar y cargar puntajes
 import os  # Para manejar rutas de archivos
 from PIL import Image, ImageTk  # Para manejar imágenes
 
-# =========================
+
 # RUTAS
-# =========================
 
 # Obtiene la ruta base donde está el archivo actual
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -16,9 +15,9 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 def ruta(rel):
     return os.path.join(BASE_DIR, rel)
 
-# =========================
+
 # MODELOS (CLASES)
-# =========================
+
 
 # Clase que representa un Pokémon
 class Pokemon:
@@ -45,9 +44,9 @@ class Trainer:
         self.pokemons = []  # Lista de Pokémon
         self.score = 0  # Puntaje
 
-# =========================
+
 # DATA (POKEMONES)
-# =========================
+
 
 # Función que crea todos los Pokémon disponibles
 def create_pokemons():
@@ -63,9 +62,9 @@ def create_pokemons():
         Pokemon("Vulpix", 95, 40, 15),
     ]
 
-# =========================
+
 # SCORES (PUNTAJES)
-# =========================
+
 
 # Archivo donde se guardan los puntajes
 SCORE_FILE = "scores.json"
@@ -88,9 +87,9 @@ def save_score(player):
     with open(SCORE_FILE, "w") as f:
         json.dump(scores, f, indent=4)
 
-# =========================
+
 # APP PRINCIPAL
-# =========================
+
 
 class App:
     def __init__(self, root):
@@ -301,9 +300,8 @@ class App:
         for w in self.root.winfo_children():
             w.destroy()
 
-# =========================
 # EJECUCION PRINCIPAL
-# =========================
+
 
 root = tk.Tk()
 app = App(root)
