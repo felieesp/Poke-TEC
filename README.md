@@ -1,57 +1,65 @@
-# Poke-TEC v2
+# ⚡ Poke-TEC v2
 
-Aventura Pokémon por turnos hecha en Python (tkinter + Pillow). Es la evolución del Poke-TEC original: se conserva el
-**Duelo Clásico** (la versión anterior) y se añade un modo **Aventura** completo.
+**Tu aventura Pokémon por turnos, hecha en Python.** Explora un mundo, captura y entrena Pokémon, derrota entrenadores
+y gana medallas, o juega el Duelo Clásico de la versión original.
 
-## Ejecutar
+> Proyecto en Python 3 con `tkinter` + `Pillow`. Sin dependencias pesadas, con motor de juego separado de la interfaz y 104 pruebas automáticas.
+
+## Características
+
+| Área | Qué incluye |
+|---|---|
+| **Combate** | Turnos con daño basado en estadísticas, 13 tipos con ventajas y desventajas, STAB, críticos, precisión y prioridad |
+| **Estados** | Quemadura, parálisis, veneno y sueño |
+| **Pokémon** | 55 especies, 56 movimientos, niveles, experiencia, nuevos ataques y evoluciones (por nivel y piedra) |
+| **Equipo y objetos** | Equipo de hasta 6, Caja, mochila por bolsillos, 19 objetos, tienda y Centro Pokémon |
+| **Captura** | Poké Balls con probabilidad según salud, estado y tipo de ball |
+| **Mundo** | 6 zonas, hierba alta con encuentros aleatorios, 16 entrenadores, medallas que abren el camino y misiones |
+| **IA rival** | Fácil, normal y difícil: elige por daño esperado, explota debilidades, remata y cambia de Pokémon |
+| **Partidas** | Autoguardado, copia de seguridad y recuperación de archivos corruptos; tabla de récords |
+| **Interfaz** | Menú animado, barras de PS y EXP dinámicas, efectos de ataque, diálogos y soporte de teclado y ratón |
+
+## Cómo jugar
 
 ```bash
-pip install -r requirements.txt   # Pillow (tkinter viene con Python; en Linux: sudo apt install python3-tk)
-python main.py                    # o: python -m poketec
+git clone https://github.com/felieesp/Poke-TEC.git
+cd Poke-TEC
+pip install -r requirements.txt
+python main.py
 ```
 
-Controles: flechas / WASD mover, `Enter`/`Z`/`Espacio` aceptar, `Esc`/`X` atrás, `M`/`Tab` menú. También funciona con el ratón.
+En Linux, si falta tkinter: `sudo apt install python3-tk`.
 
-## Qué incluye
+### Controles
 
-- **Combate por turnos** con daño basado en estadísticas, 13 tipos y su efectividad, STAB, críticos, precisión, prioridad,
-  estados (parálisis, quemadura, veneno, sueño), cambio de Pokémon, huida y **captura** con Poké Balls.
-- **55 especies**, **56 movimientos**, **19 objetos** (pociones, curas, revivir, balls, piedras evolutivas, caramelos).
-- **Niveles, experiencia, aprendizaje de movimientos y evoluciones** (por nivel y por piedra).
-- **Equipo de hasta 6** + Caja, mochila por bolsillos, tienda y Centro Pokémon.
-- **Mundo**: 6 zonas (Pueblo Origen → Ruta 1 → Bosque Verde → Ciudad Roca → Costa Azul → Pico Ceniza), hierba alta con
-  encuentros aleatorios, 16 entrenadores, gimnasios con **medallas** que desbloquean el paso, misiones y progresión.
-- **IA rival** en 3 dificultades (fácil / normal / difícil): elige por daño esperado, explota debilidades, remata,
-  cambia de Pokémon y usa pociones con criterio.
-- **Guardado y carga** (autoguardado, copia `.bak` y recuperación si el archivo está corrupto) y tabla de **récords**.
-- **Interfaz**: menú animado, barras de PS/EXP dinámicas, efectos de ataque, transiciones, avisos y diálogos con
-  máquina de escribir, estilo coherente en todas las pantallas. Errores en pantalla se registran y no cierran el juego.
+| Acción | Teclas |
+|---|---|
+| Moverse / elegir | Flechas o `W A S D` |
+| Aceptar / interactuar | `Enter`, `Z` o `Espacio` |
+| Atrás | `Esc` o `X` |
+| Menú de pausa | `M` o `Tab` |
 
-## Arquitectura
+## Estructura
 
 ```
 poketec/
-  engine/   Lógica pura, sin dependencias de interfaz (testeable sin ventana)
-    elements.py  tipos y tabla de efectividad      calc.py      fórmulas de daño/captura/EXP
-    species.py   especies y evoluciones            moves.py     movimientos
-    pokemon.py   Pokémon individual                items.py/player.py  objetos, mochila, jugador
-    battle.py    máquina de estados del combate    ai.py        IA rival
-    world.py     zonas, entrenadores                adventure.py  orquesta la partida
-    quests.py, save.py, scores.py, classic.py (Duelo Clásico)
-  ui/       Presentación (tkinter) sobre un Renderer abstracto
-    renderer.py  Renderer (Tk) y PilRenderer (pruebas)     app.py  pila de pantallas
-    screens/     menú, mundo, combate, equipo, mochila, diálogos…
-legacy/     Código original (conservado, sin tocar)
-tests/      Pruebas del motor y de la interfaz (sin ventana)
+  engine/   Reglas del juego, sin interfaz: combate, IA, mundo, guardado, misiones
+  ui/       Pantallas y dibujo (tkinter), sobre un Renderer abstracto
+legacy/     Código original, conservado
+tests/      Pruebas del motor y de la interfaz sin ventana
+docs/       CHANGELOG
 ```
 
-La interfaz nunca contiene reglas de juego y el motor nunca importa la interfaz.
+El motor nunca importa la interfaz, así que se puede probar sin abrir ninguna ventana y ampliar con nuevas especies,
+movimientos o zonas añadiendo datos.
 
 ## Pruebas
 
 ```bash
 pip install pytest
-python -m pytest -q      # 104 pruebas: daño, tipos, estados, captura, evolución, IA, guardado, menús y flujo completo
+python -m pytest -q
 ```
 
-Consulta [docs/CHANGELOG.md](docs/CHANGELOG.md) para el detalle de cambios.
+## Más información
+
+Historial de cambios en [docs/CHANGELOG.md](docs/CHANGELOG.md).
