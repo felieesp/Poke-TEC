@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+# Partidas guardadas locales (se conserva la carpeta)
+saves/*.json
+saves/*.bak
+!saves/.gitkeep
+
+poketec_error.log
